@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NorthWind.Data;
 using NorthWind.Repositories;
+using NorthWindProject.Mappings;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 builder.Services.AddScoped<ICustomerRepository, SQLCustomerRepository>();
 //DBContext DI
 builder.Services.AddDbContext<NorthWindContext>(options =>
