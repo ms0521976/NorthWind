@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NorthWind.Data;
+using NorthWind.Repositories;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<ICustomerRepository, SQLCustomerRepository>();
 //DBContext DI
 builder.Services.AddDbContext<NorthWindContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("NorthWindConnectionString")));
