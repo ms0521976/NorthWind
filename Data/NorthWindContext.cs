@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using NorthWind.Models.Domain;
 
-namespace NorthWind.Models.Domain;
+
+namespace NorthWind.Data;
 
 public partial class NorthWindContext : DbContext
 {
