@@ -42,15 +42,38 @@ namespace NorthWind.Controller
             return Ok(mapper.Map<CustomerDto>(customerDomain));
         }
 
-        //update Customer by ID
+        //Create Customer by ID
         [HttpPost]
-        [Route("CustomerID")]
+        [Route("{customerID}")]
         public async Task<IActionResult> CreateAsync([FromBody] CustomerDto customerDto)
         {
             var customerDomain = mapper.Map<Customer>(customerDto);
             customerDomain = await customerRepository.CreateAsync(customerDomain);
             return CreatedAtAction(nameof(GetCustomerByIDAsync), new { id = customerDto.CustomerId }, customerDto);
 
+        }
+
+        //Update Customer by ID
+        [HttpPut]
+        [Route("{customerID}")]
+        public async Task<IActionResult> UpdateAsync([FromRoute] string customerID, [FromBody] UpdateCustomerDto updateCustomerDto)
+        {
+            var customerDomain = mapper.Map<Customer>(updateCustomerDto);
+            customerDomain = await customerRepository.UpdateAsync(customerID, customerDomain);
+            if (customerDomain == null)
+                return NotFound();
+            return Ok(mapper.Map<UpdateCustomerDto>(customerDomain));
+        }
+
+        //Delete Customer by ID
+        [HttpDelete]
+        [Route("{customerID}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] string customerID)
+        {
+            var customerDomain = await customerRepository.DeleteAsync(customerID);
+            if (customerDomain == null)
+                return NotFound();
+            return Ok(mapper.Map<CustomerDto>(customerDomain));
         }
     }
 }

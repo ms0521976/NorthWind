@@ -7,5 +7,7 @@ namespace NorthWind.Repositories
         Task<List<Customer>> GetAllAsync();
         Task<Customer?> GetCustomerByIDAsync(string customer);
         Task<Customer> CreateAsync(Customer customer);
+        Task<Customer?> UpdateAsync(string customerID, Customer customer);
+        Task<Customer?> DeleteAsync(string customerID);
     }
 }

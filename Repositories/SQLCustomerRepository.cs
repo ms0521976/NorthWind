@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using NorthWind.Data;
 using NorthWind.Models.Domain;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace NorthWind.Repositories
 {
@@ -27,6 +29,34 @@ namespace NorthWind.Repositories
             await dbContext.Customers.AddAsync(customer);
             await dbContext.SaveChangesAsync();
             return customer;
+        }
+
+        public async Task<Customer?> UpdateAsync(string customerID, Customer customer)
+        {
+            var existingCustomer = await dbContext.Customers.FirstOrDefaultAsync(x => x.CustomerId == customerID);
+            if (existingCustomer == null)
+                return null;
+            existingCustomer.ContactName = customer.ContactName;
+            existingCustomer.ContactTitle = customer.ContactTitle;
+            existingCustomer.Address = customer.Address;
+            existingCustomer.City = customer.City;
+            existingCustomer.Region = customer.Region;
+            existingCustomer.PostalCode = customer.PostalCode;
+            existingCustomer.Country = customer.Country;
+            existingCustomer.Phone = customer.Phone;
+            existingCustomer.Fax = customer.Fax;
+            await dbContext.SaveChangesAsync();
+            return existingCustomer;
+        }
+
+        public async Task<Customer?> DeleteAsync(string customerID)
+        {
+            var existingCustomer = await dbContext.Customers.FirstOrDefaultAsync(x => x.CustomerId == customerID);
+            if (existingCustomer == null)
+                return null;
+            dbContext.Customers.Remove(existingCustomer);
+            await dbContext.SaveChangesAsync();
+            return existingCustomer;
         }
     }
 }
